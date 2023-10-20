@@ -162,6 +162,9 @@ func (c *Controller) syncHandler(ctx context.Context, key string) error {
 	}
 
 	deploy2 := deploy.DeepCopy()
+	if deploy2.Annotations == nil {
+		deploy2.Annotations = make(map[string]string)
+	}
 	deploy2.Annotations["sample-controller"] = "True"
 	logger.V(4).Info("Need to set sample-controller annotation")
 	_, err = c.kubeclientset.AppsV1().Deployments(ns).Update(context.TODO(), deploy2, metav1.UpdateOptions{})
